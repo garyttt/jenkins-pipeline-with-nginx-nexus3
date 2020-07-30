@@ -31,6 +31,7 @@ services:
   # 3. click 'Apply'
   # 4. Cretae the inbound (aka JNLP) agent in jenkins GUI and mote down the connection secret
   # 5. Paste the secret in the command line here, restart the container (docker-compise stop, rm, up -d)
+  # 6. You could delete and remove the inbound agent to get a new secret if needed
   jkagent01:
     image: jenkins/inbound-agent
     container_name: jkagent01
