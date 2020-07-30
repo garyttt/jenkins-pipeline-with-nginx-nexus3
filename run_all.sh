@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+mkdir -p jenkns_agent01 jenkins_agent02 jenkins_config_backup jenkins_home nexus-data >/dev/null 2>&1
 ./stop_all.sh
 docker-compose up -d 
 
