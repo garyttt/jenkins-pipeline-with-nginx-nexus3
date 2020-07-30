@@ -6,7 +6,7 @@ mkdir -p jenkns_agent01 jenkins_agent02 jenkins_config_backup jenkins_home nexus
 ./stop_all.sh
 docker-compose up -d 
 
-. ~/.install/functions >/dev/null 2>&1
+. ./functions >/dev/null 2>&1
 docker_ip nginx
 docker_ip nexus3
 docker_ip jenkins
