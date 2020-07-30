@@ -70,13 +70,10 @@ services:
       - TZ=Asia/Singapore
     ports:
       - 80:80
-      - 443:443
-    volumes:
+      volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - $PWD/nginx_config/default.conf:/etc/nginx/conf.d/default.conf
-      - $PWD/nginx_html/:/var/www/nginx/html/
-      - $PWD/certs/:/etc/nginx/certs/
-      - $PWD/logs/nginx/:/var/log/nginx/
+      - $PWD/nginx_html:/var/www/nginx/html
 
   nexus3:
     image: sonatype/nexus3
