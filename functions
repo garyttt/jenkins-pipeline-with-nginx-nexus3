@@ -208,6 +208,15 @@ helm_v3_release() {
   helm install -f $VALUES $RELEASE $SOURCE $VERSION | tee $LOGFILE
 }
 
+# Help certificate-key matcher
+help_cert_key_matcher() {
+  cat <<EOF >&1
+  
+  See https://www.sslshopper.com/certificate-key-matcher.html
+
+EOF
+}
+
 # Help GIT commands
 help_git_cmds() {
   cat <<EOF >&1
