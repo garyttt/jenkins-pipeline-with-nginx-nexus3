@@ -77,11 +77,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - $PWD/nginx_html:/var/www/nginx/html
-      - $PWD/nginx_config/default.conf:/etc/nginx/conf.d/default.conf
+      #- $PWD/nginx_config/default.conf:/etc/nginx/conf.d/default.conf
       # https mode: so far it does not work for self-signed cert
-      #- $PWD/nginx_config/nginx_example_local.conf:/etc/nginx/conf.d/default.conf
-      #- $PWD/certs:/etc/nginx/certs
-      #- $PWD/dhparams.pem:/etc/nginx/dhparams.pem
+      - $PWD/nginx_config/nginx_example_local.conf:/etc/nginx/conf.d/default.conf
+      - $PWD/certs:/etc/nginx/certs
+      - $PWD/dhparams.pem:/etc/nginx/dhparams.pem
   nexus3:
     image: sonatype/nexus3
     container_name: nexus3
