@@ -4,4 +4,3 @@ jenkins_config_backup/
 jenkins_home/
 logs/
 nexus-data
-dhparams.pem
