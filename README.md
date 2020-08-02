@@ -17,7 +17,7 @@ The docker-compose.yaml will also create two Jenkins Agents (JNLP4 and SSH), Nex
 
 # How to accees Jenkins via baseURL or via Reverse Proxy (Nginx)
 5. http://127.0.0.1:8080/jenkins # baseURL
-6. http://127.0.0.1/jenkins # Nginx revserse proxy
+6. http://127.0.0.1/jenkins # Nginx reverse proxy
 
 # How to setup Inbound Agent (aka JNLP4 aka Java WebStart Agent) or SSH Agent
 7. https://github.com/garyttt/jenkins-pipeline-with-nginx-nexus3/blob/master/jenkins_create_nodes(agents).pdf
