@@ -4,7 +4,7 @@ Disclaimer: the containers created are meant for non-production / lab or testing
 
 The docker-compose.yaml will load a customized jenkins image v1.0.X
 Refer to https://github.com/garyttt/unattended_jenkins_image_build for steps to create this customized image
-This customized image has: first admin user 'admin' setup with pre-configured password in the dockfile file from the above url, and some baseline setup on baseURL, enable agent to master access control, set number of executors, and enable proxy compatibility.
+This customized image has: first admin user 'admin' setup with pre-configured password in the dockerfile from the above url, and some baseline setup on baseURL, enable agent to master access control, set number of executors, and enable proxy compatibility.
 
 The docker-compose.yaml will also create two Jenkins Agents (JNLP4 and SSH), Nexus3 Repository Manager and Nginx Reverse Proxy (http mode only)
 
