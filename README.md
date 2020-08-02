@@ -23,6 +23,6 @@ The docker-compose.yaml will also create two Jenkins Agents (JNLP4 and SSH), Nex
 7. https://github.com/garyttt/jenkins-pipeline-with-nginx-nexus3/blob/master/jenkins_create_nodes(agents).pdf
 
 # How to setup periodic backup so that your config changes are backed up
-8. When jenkins master first is first time started, you will notice 'WARNING o.j.p.p.PeriodicBackup#execute: Cron is not defined.', you could follow https://github.com/garyttt/unattended_jenkins_image_build/blob/master/Jenkins_Periodic_Backup_Config_Example.pdf to get it setup.
+8. When jenkins master is first time started, you will notice 'WARNING o.j.p.p.PeriodicBackup#execute: Cron is not defined.', you could follow https://github.com/garyttt/unattended_jenkins_image_build/blob/master/Jenkins_Periodic_Backup_Config_Example.pdf to get it setup.
 
 
