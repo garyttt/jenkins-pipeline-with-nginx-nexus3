@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   jenkins:
-    image: garyttt8/jenkins:1.0.4
+    image: garyttt8/jenkins:1.0.8
     container_name: jenkins
     hostname: jenkins
     extra_hosts:
