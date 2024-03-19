@@ -2,11 +2,13 @@ version: '3.8'
 services:
 
   jenkins:
-    image: garyttt8/jenkins:2.277.3-lts-jdk11
+    image: garyttt8/jenkins:2.449-jdk17
     container_name: jenkins
+    user: root
     hostname: jenkins
+    # For docker-desktop user: replace the docker internal/private IP with what is shown in %windir%\system32\drivers\etc
     extra_hosts:
-      - "host.docker.internal:192.168.1.70"
+      - "host.docker.internal:192.168.1.4"
     healthcheck:
       test: ["CMD","bash","-c","curl --head http://localhost:8080 && exit 0 || exit 1"]
       interval: 5s
@@ -30,35 +32,45 @@ services:
   # 1. Manage Jenkins / Configure Global Security / Agents, set 'TCP port for inbound agents' to Fixed:50000
   # 2. checked 'Agent protocols' for 'InBound TCP Agent Protocol/4 (TLS encryption)'
   # 3. click 'Apply'
-  # 4. Cretae the inbound (aka JNLP) agent in jenkins GUI and mote down the connection secret
+  # 4. Manage Jenkins / Nodes / Add - Create the inbound (aka JNLP) agent in jenkins GUI and note down the connection secret
   # 5. Paste the secret in the command line here, restart the container (docker-compise stop, rm, up -d)
   # 6. You could delete and remove the inbound agent to get a new secret if needed
   jkagent01:
     image: jenkins/inbound-agent
     container_name: jkagent01
+    user: root
     extra_hosts:
-      - "host.docker.internal:192.168.1.70"
+      - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
     environment:
       - TZ=Asia/Singapore
     volumes:
-      - $PWD/jenkins_agent01:/home/jenkins/agent
+      - $PWD/jenkins_agent01:/root
     init: true
     command: -url http://jenkins:8080/jenkins -workDir /home/jenkins/agent f2543996aa65efb3ba539c2826abf9239e22f7da251b8c3fbd9cdd388fb953db jkagent01
     depends_on:
       - jenkins
 
+  # Pre-requisites for SSH agent:
+  # 1. Manage Jenkins / Nodes / Add - Create the SSH agent in jenkins GUI
+  # 2. Launch method = Launch agent via SSH
+  # 3. Add 'jenkins' type of Credentials
+  # 4. Add SSH private key
+  # 5. Host Key Verification Strategy = Non verifying Verification Strategy (i.e. SSH option IgnoreKnownHostsFile)
+  # 6. Goto Manage Credentials of there is a need to update/replace the private key
   jkagent02:
     image: jenkins/ssh-agent
     container_name: jkagent02
+    user: root
     extra_hosts:
-      - "host.docker.internal:192.168.1.70"
+      - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
     environment:
       - TZ=Asia/Singapore
       - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7WT4TBeDghSwkfKPTtfKwqWFUWuc6bqMuvEzZGxP+66/XjQpKyjtRsGPzoyHiLUua0yyse7LDKsizTvYy055F7ilxb4Oyz3Dtr0N2j1JE4dDDAmNlu2fpo8xpmrflFfMY1VBKGVoPDTQlwew3X6DTmYSdXSVxl7CbcobVGsrUkWY9f+LYGZlx+9ZmSzN+8HMrHlZ+bO+Z8b3Qv6xQiH+d856awq6H5WimsT00ynauQAQ1KuAPPELVgoguOsDDdIKPz2ZprvGvrl8FQERHZoKmBbWXVMi6Lic9T14n34/feB/oY8KqF1l2hvdDyo4I6dpccm8NC2NFY2XneJncBmNbkVaTmqCRspX1S0k/Rsvrf+7SQGoXzbID214gygHoOy0zzxeiZBRSfy4Crss/1hC0wEWEsx356mlhppx9RQlQ4oEkZ6//PvYQyfOtSwVLN2jOdif8/0Mhg+dFSWQZpE+7jKWZnoK9rqgTE1bixsDhIqYuvCdjqX0AfDOg1j2r5/s= gtay@GIGANTOR
     volumes:
-      - $PWD/jenkins_agent02:/home/jenkins/agent
+      - $PWD/jenkins_agent02:/root
+      - /home/jenkins/.ssh:/home/jenkins/.ssh
     depends_on:
       - jenkins
 
@@ -67,7 +79,7 @@ services:
     container_name: nginx
     hostname: nginx
     extra_hosts:
-      - "host.docker.internal:192.168.1.70"
+      - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
     environment:
       - TZ=Asia/Singapore
@@ -86,7 +98,7 @@ services:
     image: sonatype/nexus3
     container_name: nexus3
     extra_hosts:
-      - "host.docker.internal:192.168.1.70"
+      - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
     ports:
       - 8081:8081
