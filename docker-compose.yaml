@@ -27,7 +27,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - $PWD/jenkins_home:/var/jenkins_home
       - $PWD/jenkins_config_backup:/var/tmp/jenkins_config_backup
-  
+
   # Pre-requisites for inbound agent (aka JNLP aka Java WebStart agent):
   # 1. Manage Jenkins / Configure Global Security / Agents, set 'TCP port for inbound agents' to Fixed:50000
   # 2. checked 'Agent protocols' for 'InBound TCP Agent Protocol/4 (TLS encryption)'
@@ -36,7 +36,7 @@ services:
   # 5. Paste the secret in the command line here, restart the container (docker-compise stop, rm, up -d)
   # 6. You could delete and remove the inbound agent to get a new secret if needed
   jkagent01:
-    image: jenkins/inbound-agent
+    image: jenkins/inbound-agent:latest-jdk17
     container_name: jkagent01
     user: root
     extra_hosts:
@@ -47,7 +47,7 @@ services:
     volumes:
       - $PWD/jenkins_agent01:/root
     init: true
-    command: -url http://jenkins:8080/jenkins -workDir /home/jenkins/agent f2543996aa65efb3ba539c2826abf9239e22f7da251b8c3fbd9cdd388fb953db jkagent01
+    command: -url http://jenkins:8080/jenkins -workDir /home/jenkins/agent a8583cdd22fdf78e3d33d85aef34057a9e79bdd065264e3014db02d7f4ecedc2 jkagent01
     depends_on:
       - jenkins
 
@@ -58,8 +58,9 @@ services:
   # 4. Add SSH private key
   # 5. Host Key Verification Strategy = Non verifying Verification Strategy (i.e. SSH option IgnoreKnownHostsFile)
   # 6. Goto Manage Credentials of there is a need to update/replace the private key
+  # 7. Add the corresponding SSH public key here
   jkagent02:
-    image: jenkins/ssh-agent
+    image: jenkins/ssh-agent:latest-jdk17
     container_name: jkagent02
     user: root
     extra_hosts:
@@ -67,7 +68,9 @@ services:
     restart: unless-stopped
     environment:
       - TZ=Asia/Singapore
-      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7WT4TBeDghSwkfKPTtfKwqWFUWuc6bqMuvEzZGxP+66/XjQpKyjtRsGPzoyHiLUua0yyse7LDKsizTvYy055F7ilxb4Oyz3Dtr0N2j1JE4dDDAmNlu2fpo8xpmrflFfMY1VBKGVoPDTQlwew3X6DTmYSdXSVxl7CbcobVGsrUkWY9f+LYGZlx+9ZmSzN+8HMrHlZ+bO+Z8b3Qv6xQiH+d856awq6H5WimsT00ynauQAQ1KuAPPELVgoguOsDDdIKPz2ZprvGvrl8FQERHZoKmBbWXVMi6Lic9T14n34/feB/oY8KqF1l2hvdDyo4I6dpccm8NC2NFY2XneJncBmNbkVaTmqCRspX1S0k/Rsvrf+7SQGoXzbID214gygHoOy0zzxeiZBRSfy4Crss/1hC0wEWEsx356mlhppx9RQlQ4oEkZ6//PvYQyfOtSwVLN2jOdif8/0Mhg+dFSWQZpE+7jKWZnoK9rqgTE1bixsDhIqYuvCdjqX0AfDOg1j2r5/s= gtay@GIGANTOR
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMvt/US0UYx0o4GJANf+V/+cja4bQzdSO5oDtUZVsKDyl8t/mOJcnyPkWOUxE8g/v7dBhrVNiEEy/41bwR8x3svOEFMou7MyemCCIsiATLwb9UZeI6JWtGi6yEwuuMlYhNzNJFJ3oSSVkx7idVGvpyP8uIWX9G1jAJPA2WYCCAYBMGN528/lbBbwAxELTT/nmkb270TU6d3EfjuAyHX1W7ZZed1fPU21zptHQxBtHwwFKCurvgqJCpPUv9cIzrgMFWUdbApX6j6RU3BNfmyAq35MLSEuq83Kdqgn3fHqE/QYunCH3DnV3dgEgXMqs5hDRBL7JkXCXfKr2P7y+8Y8XNS8SHyNUX96z9N8kOIN24I4kkpEwPZafIXMbtSoP+8rZeV7D2jFISHYhZS8ez2zg7I8LqU6xFskJxvspnIY93HRGzUK64efG5lckKZFIBT1biClr2vAtk+WFci6wDw2BkJRPgYw3CXJ/IhS+DOJ+Yg6BLb/5YtzkAo0yAt8x8rM42PnH1/zuYf6dJHlKzrdnnSerD9bUha67nryoe/x0+yqZYO3w8ur2SUC6fk1Rbi6a6w+wInpKSAEqxsHrBSM+8zVeYXZ0/LK7nSiNrCD8kAOb0aBweSoO69gk1tp1tO5ZPplrG0iDOsy0ZkOuaOzHdFAQUoF80bvzoV/w0hC1M3w== jenkins@TITANIC
+    ports:
+      - 2200:22
     volumes:
       - $PWD/jenkins_agent02:/root
       - /home/jenkins/.ssh:/home/jenkins/.ssh
@@ -75,7 +78,7 @@ services:
       - jenkins
 
   nginx:
-    image: nginx
+    image: nginx:latest
     container_name: nginx
     hostname: nginx
     extra_hosts:
@@ -95,13 +98,13 @@ services:
       #- $PWD/certs:/etc/nginx/certs
       #- $PWD/dhparams.pem:/etc/nginx/dhparams.pem
   nexus3:
-    image: sonatype/nexus3
+    image: sonatype/nexus3:latest
     container_name: nexus3
     extra_hosts:
       - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
     ports:
-      - 8081:8081
+      - 9081:8081
     environment:
       - NEXUS_CONTEXT=nexus
       - TZ=Asia/Singapore
