@@ -5,7 +5,7 @@ UIDNUMBER=`id -u`
 # Pre-create/own folders mapped by containers to avoid permission issue later
 mkdir -p jenkns_agent01 jenkins_agent02 jenkins_config_backup jenkins_home nexus-data nginx_config nginx_html >/dev/null 2>&1
 ./stop_all.sh
-docker-compose up -d 
+docker compose up -d 
 
 . ./functions >/dev/null 2>&1
 docker_ip nginx
