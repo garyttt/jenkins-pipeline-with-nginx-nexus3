@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   jenkins:
-    image: garyttt8/jenkins:2.449-jdk17
+    image: garyttt8/jenkins:2.450-jdk17
     container_name: jenkins
     user: root
     hostname: jenkins
