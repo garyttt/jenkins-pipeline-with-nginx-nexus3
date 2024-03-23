@@ -1,8 +1,10 @@
-jenkins_agent01/
-jenkins_agent02/
-jenkins_config_backup/
-jenkins_home/
-logs/
-nexus-data
-certs/
+jenkins_agent01/*
+jenkins_agent02/*
+jenkins_config_backup/*
+jenkins_home/*
+logs/*
+nexus-data/*
+certs/*
 dhparams.pem
+# in case jenkin_home is a symbolic link
+jenkins_home
