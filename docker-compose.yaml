@@ -73,7 +73,6 @@ services:
       - 2200:22
     volumes:
       - $PWD/jenkins_agent02:/root
-      - /home/jenkins/.ssh:/home/jenkins/.ssh
     depends_on:
       - jenkins
 
@@ -100,11 +99,12 @@ services:
   nexus3:
     image: sonatype/nexus3:latest
     container_name: nexus3
+    user: root
     extra_hosts:
       - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
     ports:
-      - 9081:8081
+      - 8081:8081
     environment:
       - NEXUS_CONTEXT=nexus
       - TZ=Asia/Singapore
