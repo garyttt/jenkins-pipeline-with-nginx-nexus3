@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 services:
 
   jenkins:
@@ -25,8 +25,8 @@ services:
       - TZ=Asia/Singapore
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - $PWD/jenkins_home:/var/jenkins_home
-      - $PWD/jenkins_config_backup:/var/tmp/jenkins_config_backup
+      - $PWD/../jenkins_home:/var/jenkins_home
+      - $PWD/../jenkins_config_backup:/var/tmp/jenkins_config_backup
 
   # Pre-requisites for inbound agent (aka JNLP aka Java WebStart agent):
   # 1. Manage Jenkins / Configure Global Security / Agents, set 'TCP port for inbound agents' to Fixed:50000
@@ -45,7 +45,7 @@ services:
     environment:
       - TZ=Asia/Singapore
     volumes:
-      - $PWD/jenkins_agent01:/root
+      - $PWD/../jenkins_agent01:/root
     init: true
     command: -url http://jenkins:8080/jenkins -workDir /home/jenkins/agent a8583cdd22fdf78e3d33d85aef34057a9e79bdd065264e3014db02d7f4ecedc2 jkagent01
     depends_on:
@@ -72,7 +72,7 @@ services:
     ports:
       - 2200:22
     volumes:
-      - $PWD/jenkins_agent02:/root
+      - $PWD/../jenkins_agent02:/root
     depends_on:
       - jenkins
 
@@ -97,7 +97,7 @@ services:
       #- $PWD/certs:/etc/nginx/certs
       #- $PWD/dhparams.pem:/etc/nginx/dhparams.pem
   nexus3:
-    image: sonatype/nexus3:latest
+    image: sonatype/nexus3:3.66.0
     container_name: nexus3
     user: root
     extra_hosts:
@@ -109,7 +109,22 @@ services:
       - NEXUS_CONTEXT=nexus
       - TZ=Asia/Singapore
     volumes:
-      - $PWD/nexus-data/:/nexus-data/
+      - $PWD/../nexus-data/:/nexus-data/
+
+  bitbucket:
+    image: atlassian/bitbucket:8.2.3
+    container_name: bitbucket
+    user: root
+    extra_hosts:
+      - "host.docker.internal:192.168.1.4"
+    restart: unless-stopped
+    ports:
+      - 7990:7990
+      - 7999:7999
+    environment:
+      - TZ=Asia/Singapore
+    volumes:
+      - $PWD/../bitbucket-data:/var/atlassian/application-data/bitbucket
 
 # Not using docker volumes for bind mount, using folder for bind mount
 #volumes:
