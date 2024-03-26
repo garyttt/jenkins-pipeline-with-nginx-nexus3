@@ -114,7 +114,6 @@ services:
   bitbucket:
     image: atlassian/bitbucket:8.2.3
     container_name: bitbucket
-    user: root
     extra_hosts:
       - "host.docker.internal:192.168.1.4"
     restart: unless-stopped
