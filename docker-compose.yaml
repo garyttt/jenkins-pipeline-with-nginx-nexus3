@@ -20,7 +20,7 @@ services:
       - 8080:8080
       - 50000:50000
     environment:
-      - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+      - JAVA_OPTS="-Djenkins.install.runSetupWizard=false -Xmx4g"
       - JENKINS_OPTS="--prefix=/jenkins"
       - TZ=Asia/Singapore
     volumes:
