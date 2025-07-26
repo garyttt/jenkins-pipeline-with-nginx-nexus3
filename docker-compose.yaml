@@ -2,7 +2,7 @@
 services:
 
   jenkins:
-    image: garyttt8/jenkins:2.518-jdk17
+    image: garyttt8/jenkins:2.520-jdk17
     container_name: jenkins
     user: root
     hostname: jenkins
